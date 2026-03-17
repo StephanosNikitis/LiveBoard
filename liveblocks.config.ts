@@ -58,6 +58,8 @@ export const {
   useMyPresence,
   useStorage,
   useOther,
+  useOthersMapped,
+  useMutation
 
   // Other hooks
   // ...
