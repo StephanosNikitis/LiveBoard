@@ -1,6 +1,6 @@
 "use client";
 
-import { useOthers, useSelf } from "@liveblocks/react/suspense";
+import { useOthers, useSelf } from "@/liveblocks.config";
 import { UserAvatar } from "./user-avatar";
 import { connectionIdToColor } from "@/lib/utils";
 
