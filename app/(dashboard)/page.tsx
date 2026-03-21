@@ -2,7 +2,7 @@
 
 import { useOrganization } from "@clerk/nextjs";
 import { EmptyOrg } from "./_components/empty-org";
-import { use } from "react";
+import { Suspense, use } from "react";
 import { BoardList } from "./_components/board-list";
 
 interface DashboardPageProps {
@@ -24,13 +24,15 @@ const DashboardPage = ({
       {!organization ? (
         <EmptyOrg />
       ) : (
-        <BoardList 
-          orgId = {organization.id}
-          query = {{
-            search,
-            favourites
-          }}
-        />
+        <Suspense fallback={null}>
+          <BoardList 
+            orgId = {organization.id}
+            query = {{
+              search,
+              favourites
+            }}
+          />
+        </Suspense>
       )}
     </div>
   )
