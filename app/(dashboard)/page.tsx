@@ -2,40 +2,37 @@
 
 import { useOrganization } from "@clerk/nextjs";
 import { EmptyOrg } from "./_components/empty-org";
-import { Suspense, use } from "react";
+import { Suspense } from "react";
 import { BoardList } from "./_components/board-list";
+import { useSearchParams } from "next/navigation";
 
-interface DashboardPageProps {
-  searchParams: Promise<{
-    search?: string;
-    favourites?: string;
-  }>;
-};
-
-const DashboardPage = ({
-  searchParams,
-} : DashboardPageProps) => {
+const DashboardContent = () => {
   const { organization } = useOrganization();
-  const { search, favourites } = use(searchParams);
+  const searchParams = useSearchParams();
+
+  if (!organization) {
+    return <EmptyOrg />;
+  }
 
   return (
+    <BoardList 
+      orgId={organization.id}
+      query={{
+        search: searchParams.get("search") || undefined,
+        favourites: searchParams.get("favourites") || undefined,
+      }}
+    />
+  );
+};
+
+const DashboardPage = () => {
+  return (
     <div className='flex-1 h-[calc(100%-80px)] p-6'>
-      {/* {JSON.stringify({ search, favourites })} */}
-      {!organization ? (
-        <EmptyOrg />
-      ) : (
-        <Suspense fallback={null}>
-          <BoardList 
-            orgId = {organization.id}
-            query = {{
-              search,
-              favourites
-            }}
-          />
-        </Suspense>
-      )}
+      <Suspense fallback={null}>
+        <DashboardContent />
+      </Suspense>
     </div>
   )
 }
 
-export default DashboardPage
+export default DashboardPage;
